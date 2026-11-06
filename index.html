@@ -33,6 +33,7 @@
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-kakao" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.5 2 10.8c0 2.7 1.8 5.1 4.5 6.5l-1 3.7c-.1.3.3.6.6.4l4.4-2.9c.5.1 1 .1 1.5.1 5.5 0 10-3.5 10-7.8S17.5 3 12 3z"/></symbol>
   <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4zM6 11v4c0 1.5 3 3 6 3s6-1.5 6-3v-4"/><path d="M22 9v6"/></symbol>
 </svg>
 
@@ -388,10 +389,11 @@
   </div>
 </footer>
 
-<div class="bbar" data-bbar>
-  <a href="tel:01077235728"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>전화 상담</a>
-  <a href="sms:01077235728"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg>문자 문의</a>
-  <a href="#contact" class="bbar__quote"><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>견적문의</a>
+<div class="fab" aria-label="빠른 상담">
+  <!-- 카카오톡 채널 주소 확인 후 href 교체 -->
+  <a class="fab__btn fab__btn--kakao" href="https://pf.kakao.com/_카카오채널ID" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-kakao"/></svg><span>카톡 상담</span></a>
+  <a class="fab__btn fab__btn--tel" href="tel:01077235728"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg><span>전화 상담</span></a>
+  <a class="fab__btn fab__btn--sms" href="sms:01077235728"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg><span>문자 문의</span></a>
 </div>
 
 <script src="js/main.js" defer></script>
