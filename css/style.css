@@ -128,7 +128,7 @@ p{margin:0}
 .promises--dark .ic{color:#8cc0ff}
 .promises--dark b{color:#fff}
 .promises--dark span{color:rgba(255,255,255,.82)}
-@media (max-width:520px){.promises{grid-template-columns:1fr}}
+@media (max-width:520px){.promises{grid-template-columns:1fr 1fr;gap:10px}.promises li{padding:18px 14px;gap:6px}.promises .ic{width:28px;height:28px}.promises b{font-size:15px}.promises span{font-size:13px}}
 
 /* ---- philosophy ---- */
 .chars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
