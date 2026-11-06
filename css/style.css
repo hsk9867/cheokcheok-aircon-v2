@@ -104,12 +104,16 @@ p{margin:0}
 .about__media img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 45%}
 .about__media figcaption{position:absolute;left:16px;bottom:16px;background:rgba(255,255,255,.92);border-radius:12px;padding:8px 12px}
 .about__media figcaption img{height:34px;width:auto;aspect-ratio:auto}
-.promises{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px}
+.promises{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:0}
 .promises li{background:var(--sky-2);border:1px solid var(--line);border-radius:var(--r);padding:24px 20px;display:flex;flex-direction:column;gap:8px}
 .promises .ic{width:34px;height:34px;color:var(--blue);stroke-width:1.6}
 .promises b{font-size:17px;color:var(--navy)}
 .promises span{font-size:14px;color:var(--ink-2)}
 @media (max-width:959px){.about{grid-template-columns:1fr;gap:28px}.promises{grid-template-columns:1fr 1fr}}
+.promises--dark li{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);backdrop-filter:blur(4px)}
+.promises--dark .ic{color:#8cc0ff}
+.promises--dark b{color:#fff}
+.promises--dark span{color:rgba(255,255,255,.82)}
 @media (max-width:520px){.promises{grid-template-columns:1fr}}
 
 /* ---- philosophy ---- */
