@@ -145,6 +145,12 @@ p{margin:0}
 @media (max-width:959px){.prices{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.prices{grid-template-columns:1fr}}
 
+/* ---- quote ---- */
+.quote__cta{margin-top:8px}
+.btn--quote{font-size:20px;padding:20px 36px;box-shadow:0 14px 34px rgba(26,123,255,.35)}
+.quote__note{margin-top:16px;color:var(--mute);font-size:14px}
+@media (max-width:520px){.btn--quote{font-size:17px;padding:16px 22px;width:100%}}
+
 /* ---- works ---- */
 .works{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .work{margin:0;position:relative;border-radius:var(--r);overflow:hidden;background:#eee}
