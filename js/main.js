@@ -16,6 +16,19 @@
     });
   }
 
+  /* ---- hero typography ---- */
+  var heroTitle = document.querySelector('.hero__title');
+  if (heroTitle) {
+    var idx0 = 0;
+    heroTitle.innerHTML = heroTitle.innerHTML.split(/(<br\s*\/?>)/i).map(function(part){
+      if (/^<br/i.test(part)) return part;
+      return part.trim().split(/\s+/).filter(Boolean).map(function(w){
+        return '<span class="w"><span style="--i:' + (idx0++) + '">' + w + '</span></span>';
+      }).join(' ');
+    }).join('');
+    requestAnimationFrame(function(){ document.body.classList.add('hero-ready'); });
+  }
+
   /* ---- hero slideshow ---- */
   var slides = document.querySelectorAll('[data-slides] img');
   var dotsBox = document.querySelector('[data-dots]');
