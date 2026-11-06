@@ -74,7 +74,7 @@ p{margin:0}
 .hero__points li{display:flex;align-items:center;gap:6px}
 .hero__points .ic{color:#7fb6ff}
 .hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-@media (min-width:960px){.hero{height:min(56.25vw,860px)}}
+@media (min-width:960px){.hero{height:min(56.25vw,860px,calc(100vh - 68px));height:min(56.25vw,860px,calc(100svh - 68px));min-height:480px}}
 .hero__dots{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px}
 .hero__dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);transition:.3s}
 .hero__dots i.is-on{background:#fff;width:24px;border-radius:4px}
