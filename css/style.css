@@ -247,6 +247,11 @@ p{margin:0}
 @media (min-width:960px){.footer{padding-bottom:64px}}
 
 /* ---- floating buttons ---- */
+.side-quote{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:16px 18px 16px 16px;border-radius:999px 0 0 999px;background:var(--blue);color:#fff;font-weight:900;font-size:16px;box-shadow:0 8px 24px rgba(26,123,255,.4);transition:transform .15s,background .15s}
+.side-quote:hover{background:var(--blue-2);transform:translateY(-50%) translateX(-4px)}
+.side-quote .ic{width:22px;height:22px}
+@media (max-width:600px){.side-quote{padding:12px 14px 12px 12px;font-size:14px}}
+
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;display:flex;flex-direction:column;gap:10px}
 .fab__btn{display:flex;align-items:center;gap:8px;height:52px;padding:0 18px 0 14px;border-radius:999px;color:#fff;font-weight:800;font-size:15px;box-shadow:0 8px 22px rgba(0,0,0,.22);transition:transform .15s,box-shadow .15s}
 .fab__btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,.26)}
