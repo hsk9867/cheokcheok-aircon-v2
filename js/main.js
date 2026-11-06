@@ -40,8 +40,11 @@
     }
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduce) setInterval(function(){
+      var next = (idx + 1) % slides.length, tries = 0;
+      while (!(slides[next].complete && slides[next].naturalWidth > 0) && tries < slides.length) { next = (next + 1) % slides.length; tries++; }
+      if (next === idx) return;
       slides[idx].classList.remove('is-on'); dots[idx].classList.remove('is-on');
-      idx = (idx + 1) % slides.length;
+      idx = next;
       slides[idx].classList.add('is-on'); dots[idx].classList.add('is-on');
     }, 5000);
   }
