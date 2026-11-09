@@ -323,3 +323,15 @@ p{margin:0}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
 .reveal.is-in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero__bg img{transition:none}}
+/* ---- faq ---- */
+.faq{max-width:860px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:6px clamp(18px,3vw,32px);box-shadow:var(--shadow)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:last-child{border-bottom:0}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:20px 0;font-weight:800;font-size:clamp(16px,1.6vw,18px);color:var(--navy);line-height:1.45}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"Q";flex:none;width:30px;height:30px;border-radius:50%;background:var(--sky);color:var(--blue);font-weight:900;font-size:15px;display:grid;place-items:center}
+.faq summary::after{content:"";flex:none;width:9px;height:9px;margin:-4px 6px 0 auto;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(-135deg);margin-top:4px;border-color:var(--blue)}
+.faq summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+.faq__a{padding:0 6px 22px 44px;color:var(--ink-2);font-size:15.5px;line-height:1.75}
+@media (max-width:520px){.faq summary{gap:10px;padding:16px 0}.faq summary::before{width:26px;height:26px;font-size:13px}.faq__a{padding:0 2px 18px 36px;font-size:14.5px}}

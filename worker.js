@@ -11,6 +11,7 @@ const SESSION_DAYS = 30;
 const SETTINGS_TTL = 30 * 1000;
 const KST_OFFSET = 9 * 3600;
 const DEFAULT_PHONE = '01077235728';
+const PRIMARY_HOST = 'xn--bh3b07fhxbng33k1e399ba934cm9g.com';   // 검색에 잡혀야 하는 주소. 그 밖의 주소(workers.dev)는 noindex
 
 // 홈페이지에 들어 있는 기본 링크. 관리자에서 바꾸면 같은 주소를 쓰는 모든 링크가 함께 바뀐다.
 export const SITE_LINKS = {
@@ -137,6 +138,21 @@ function reviewsHtml(list) {
 
 // ---------- HTML 변환 ----------
 
+// <script type="application/ld+json" id="…"> 의 JSON 을 읽어 fn 으로 고친 뒤 다시 써 넣는다 (검색엔진·AI 가 읽는 구조화 데이터)
+function patchJsonLd(rw, id, fn) {
+  let buf = '';
+  rw.on(`script#${id}`, {
+    text(t) {
+      buf += t.text;
+      if (!t.lastInTextNode) { t.remove(); return; }
+      let out = buf;
+      try { const j = JSON.parse(buf); fn(j); out = JSON.stringify(j).replace(/</g, '\\u003c'); } catch (e) { /* 읽지 못하면 원본 그대로 */ }
+      buf = '';
+      t.replace(out, { html: true });
+    },
+  });
+}
+
 function transformHtml(res, s, { origin, track, setVid, secure }) {
   const rw = new HTMLRewriter();
   if (s.size) {
@@ -163,7 +179,7 @@ function transformHtml(res, s, { origin, track, setVid, secure }) {
         } else if (fmt === 'chips') {
           el.setInnerContent(lines(v).map((x, i) => `<li${i === 0 ? ' class="is-main"' : ''}>${esc(x)}</li>`).join(''), { html: true });
         } else {
-          el.setInnerContent(esc(v));
+          el.setInnerContent(v);   // 글자 그대로 넣는다 (HTMLRewriter 가 & < > 를 알아서 바꿔 주므로 esc 를 또 하면 "&amp;" 가 화면에 보인다)
         }
       },
     });
@@ -176,6 +192,40 @@ function transformHtml(res, s, { origin, track, setVid, secure }) {
     for (const [key, def] of Object.entries(SITE_LINKS)) {
       const v = safeLink(s.get(key) || '');
       if (v && v !== def) rw.on(`a[href="${def}"]`, { element(el) { el.setAttribute('href', v); } });
+    }
+
+    // 구조화 데이터(JSON-LD)도 화면과 같은 내용으로: 자주 묻는 질문 · 전화 · 주소 · 영업시간 · 제목/설명
+    const phoneChanged = !!phone && phone !== DEFAULT_PHONE;
+    const plainText = (v) => String(v).replace(/\*\*(.+?)\*\*/g, '$1').replace(/==(.+?)==/g, '$1').replace(/\s+/g, ' ').trim();
+    const swapPhone = (t) => (phoneChanged ? String(t).split(fmtPhone(DEFAULT_PHONE)).join(fmtPhone(phone)) : t);
+    if (phoneChanged || [...s.keys()].some((k) => /^faq\.\d+\.[qa]$/.test(k))) {
+      patchJsonLd(rw, 'ld-faq', (j) => {
+        (j.mainEntity || []).forEach((q, i) => {
+          const qv = s.get(`faq.${i + 1}.q`), av = s.get(`faq.${i + 1}.a`);
+          if (qv) q.name = String(qv).replace(/\s+/g, ' ').trim();
+          if (q.acceptedAnswer) q.acceptedAnswer.text = av ? swapPhone(plainText(av)) : swapPhone(q.acceptedAnswer.text);
+        });
+      });
+    }
+    if (phoneChanged || ['loc.addr', 'loc.hours', 'meta.title', 'meta.desc'].some((k) => s.get(k))) {
+      patchJsonLd(rw, 'ld-main', (j) => {
+        for (const n of j['@graph'] || []) {
+          const types = [].concat(n['@type'] || []);
+          if (types.includes('LocalBusiness')) {
+            if (phoneChanged) {
+              const intl = '+82-' + fmtPhone(phone).slice(1);
+              n.telephone = intl;
+              if (Array.isArray(n.contactPoint) && n.contactPoint[0]) n.contactPoint[0].telephone = intl;
+            }
+            // 주소를 바꾸면 좌표는 더 이상 맞지 않고, 글로 적은 영업시간은 기계가 읽는 형식으로 바꿀 수 없어 뺀다
+            if (s.get('loc.addr')) { n.address = { '@type': 'PostalAddress', streetAddress: s.get('loc.addr'), addressCountry: 'KR' }; delete n.geo; }
+            if (s.get('loc.hours')) delete n.openingHoursSpecification;
+          } else if (types.includes('WebPage')) {
+            if (s.get('meta.title')) n.name = s.get('meta.title');
+            if (s.get('meta.desc')) n.description = s.get('meta.desc');
+          }
+        }
+      });
     }
 
     const list = (k) => { const a = parseJson(s.get(k), null); return Array.isArray(a) && a.length ? a : null; };
@@ -197,6 +247,7 @@ function transformHtml(res, s, { origin, track, setVid, secure }) {
   h.delete('etag');
   h.delete('content-length');
   h.set('cache-control', 'no-cache');
+  if (new URL(origin).hostname !== PRIMARY_HOST) h.set('x-robots-tag', 'noindex');   // 미리보기 주소가 검색에 중복으로 잡히지 않게
   if (setVid) h.append('set-cookie', `${VID_COOKIE}=${setVid}; Path=/; Max-Age=${VID_DAYS * 86400}; HttpOnly; SameSite=Lax${secure ? '; Secure' : ''}`);
   return new Response(out.body, { status: out.status, headers: h });
 }
