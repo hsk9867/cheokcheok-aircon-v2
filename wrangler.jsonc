@@ -21,5 +21,9 @@
       { "name": "LOGIN_LIMIT", "type": "ratelimit", "namespace_id": "3101", "simple": { "limit": 5, "period": 60 } },
       { "name": "TRACK_LIMIT", "type": "ratelimit", "namespace_id": "3102", "simple": { "limit": 60, "period": 60 } }
     ]
-  }
+  },
+  "routes": [
+    { "pattern": "xn--bh3b07fhxbng33k1e399ba934cm9g.com", "custom_domain": true },
+    { "pattern": "www.xn--bh3b07fhxbng33k1e399ba934cm9g.com", "custom_domain": true }
+  ]
 }
