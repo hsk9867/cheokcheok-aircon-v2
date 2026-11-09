@@ -188,7 +188,20 @@ p{margin:0}
 .kpi .ic{width:32px;height:32px;color:var(--blue);margin-bottom:6px;stroke-width:1.6}
 .kpi b{font-size:22px;font-weight:900;color:var(--navy)}
 .kpi span{font-size:14px;color:var(--ink-2)}
-.reviews{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+/* 후기: 가로 슬라이드 */
+.reviews{position:relative}
+.reviews__track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 2px 8px}
+.reviews__track::-webkit-scrollbar{display:none}
+.reviews__track>.review{flex:0 0 calc((100% - 36px)/3);scroll-snap-align:start}
+.reviews__nav{position:absolute;top:50%;width:46px;height:46px;margin-top:-30px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(11,42,99,.12);transition:background .2s,color .2s;z-index:2}
+.reviews__nav:hover{background:var(--navy);color:#fff}
+.reviews__nav .ic{width:20px;height:20px}
+.reviews__nav--prev{left:-23px}.reviews__nav--prev .ic{transform:scaleX(-1)}
+.reviews__nav--next{right:-23px}
+.reviews__nav[disabled]{opacity:0;pointer-events:none}
+.reviews__dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.reviews__dots i{width:8px;height:8px;border-radius:99px;background:rgba(11,42,99,.18);transition:width .3s,background .3s}
+.reviews__dots i.is-on{width:22px;background:var(--blue)}
 .review{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 18px rgba(11,42,99,.05)}
 .review__stars{display:flex;gap:2px;color:#ffb400}
 .review__stars .ic{fill:currentColor;stroke:none;width:18px;height:18px}
@@ -200,7 +213,9 @@ p{margin:0}
 .blogcta b{display:block;font-size:19px;color:var(--navy);margin-bottom:6px}
 .blogcta p{color:var(--ink-2);font-size:15px}
 .blogcta__btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-@media (max-width:959px){.kpis{grid-template-columns:1fr;gap:10px}.kpi{flex-direction:row;text-align:left;gap:12px}.kpi .ic{margin:0}.kpi b{font-size:18px}.reviews{grid-template-columns:1fr}}
+@media (max-width:959px){.kpis{grid-template-columns:1fr;gap:10px}.kpi{flex-direction:row;text-align:left;gap:12px}.kpi .ic{margin:0}.kpi b{font-size:18px}}
+@media (max-width:959px){.reviews__track>.review{flex-basis:calc((100% - 18px)/2)}.reviews__nav{display:none}}
+@media (max-width:640px){.reviews__track>.review{flex-basis:86%}}
 @media (max-width:600px){.blogcta{grid-template-columns:1fr;text-align:center}.blogcta img{margin:0 auto}.blogcta__btns{justify-content:center}}
 
 /* ---- products ---- */

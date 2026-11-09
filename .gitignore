@@ -1,4 +1,2 @@
-Thumbs.db
-.DS_Store
-_shot.html
-_frame.html
+node_modules
+.wrangler

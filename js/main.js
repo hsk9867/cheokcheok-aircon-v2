@@ -49,6 +49,48 @@
     }, 5000);
   }
 
+  /* ---- reviews slider ---- */
+  document.querySelectorAll('[data-rslider]').forEach(function(root){
+    var track = root.querySelector('.reviews__track');
+    var prev = root.querySelector('.reviews__nav--prev'), next = root.querySelector('.reviews__nav--next');
+    var dotsBox = root.querySelector('.reviews__dots');
+    if (!track) return;
+    var cards = track.children;
+    function step(){ return cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : track.clientWidth; }
+    function pages(){ return Math.max(1, Math.round((track.scrollWidth - track.clientWidth) / step()) + 1); }
+    function cur(){ return Math.round(track.scrollLeft / step()); }
+    function buildDots(){
+      if (!dotsBox) return; dotsBox.innerHTML = '';
+      for (var i = 0; i < pages(); i++) dotsBox.appendChild(document.createElement('i'));
+      sync();
+    }
+    function sync(){
+      var c = cur(), n = pages(), atEnd = track.scrollWidth > track.clientWidth + 4 && track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      if (dotsBox) for (var i = 0; i < dotsBox.children.length; i++) dotsBox.children[i].classList.toggle('is-on', i === (atEnd ? n - 1 : c));
+      if (prev) prev.disabled = track.scrollLeft <= 4;
+      if (next) next.disabled = atEnd;
+      root.classList.toggle('is-static', n <= 1);
+    }
+    function go(dir){
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      if (dir > 0 && atEnd) track.scrollTo({ left: 0 });
+      else track.scrollBy({ left: dir * step() });
+    }
+    prev && prev.addEventListener('click', function(){ go(-1); restart(); });
+    next && next.addEventListener('click', function(){ go(1); restart(); });
+    var t, hold = false;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function restart(){ clearInterval(t); if (!reduce) t = setInterval(function(){ if (!hold && pages() > 1) go(1); }, 5000); }
+    root.addEventListener('mouseenter', function(){ hold = true; });
+    root.addEventListener('mouseleave', function(){ hold = false; });
+    track.addEventListener('touchstart', function(){ hold = true; restart(); }, { passive: true });
+    track.addEventListener('touchend', function(){ hold = false; }, { passive: true });
+    var raf; track.addEventListener('scroll', function(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(sync); }, { passive: true });
+    window.addEventListener('resize', buildDots);
+    window.addEventListener('load', buildDots);
+    buildDots(); restart();
+  });
+
   /* ---- reveal on scroll ---- */
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {

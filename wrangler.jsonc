@@ -1,0 +1,25 @@
+{
+  "name": "cheokcheok-aircon",
+  "main": "worker.js",
+  "compatibility_date": "2025-01-01",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cheokcheok-aircon-db",
+      "database_id": "9e7007fb-5120-40f6-a27f-d2181a7f645f",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "unsafe": {
+    "bindings": [
+      { "name": "LOGIN_LIMIT", "type": "ratelimit", "namespace_id": "3101", "simple": { "limit": 5, "period": 60 } },
+      { "name": "TRACK_LIMIT", "type": "ratelimit", "namespace_id": "3102", "simple": { "limit": 60, "period": 60 } }
+    ]
+  }
+}
