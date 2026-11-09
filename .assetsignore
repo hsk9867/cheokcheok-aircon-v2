@@ -7,3 +7,4 @@ worker.js
 migrations
 DEPLOY.md
 *.py
+.gitignore
